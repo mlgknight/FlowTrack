@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/ebay/Desktop/Flowtrack/frontend/app/signup/page.tsx"],"sourcesContent":["'use client';\n\nconst Signup = () => {\n\n\n\treturn (\n\t\t<div className='app'>\n\t\t\t<h3>create account</h3>\n\n\t\t</div>\n\t);\n}\n\nexport default Signup"],"names":[],"mappings":";;;;AAAA;;AAEA,MAAM,SAAS;IAGd,qBACC,6LAAC;QAAI,WAAU;kBACd,cAAA,6LAAC;sBAAG;;;;;;;;;;;AAIP;KATM;uCAWS","debugId":null}}]
+}
