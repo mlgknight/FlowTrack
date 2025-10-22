@@ -1,0 +1,461 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+	/* Original theme variables */
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+	--font-ibm-plex-sans: var(--font-ibm-plex-sans);
+	--font-bebas-neue: var(--font-bebas-neue);
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-chart-5: var(--chart-5);
+	--color-chart-4: var(--chart-4);
+	--color-chart-3: var(--chart-3);
+	--color-chart-2: var(--chart-2);
+	--color-chart-1: var(--chart-1);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-primary-admin: var(--primary-admin);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	
+	/* Color System - Updated with neutral palette */
+	--color-green: var(--green);
+	--color-green-100: var(--green-100);
+	--color-green-400: var(--green-400);
+	--color-green-500: var(--green-500);
+	--color-green-800: var(--green-800);
+	--color-red: var(--red);
+	--color-red-400: var(--red-400);
+	--color-red-500: var(--red-500);
+	--color-red-800: var(--red-800);
+	--color-blue-100: var(--blue-100);
+	--color-light-100: var(--light-100);
+	--color-light-200: var(--light-200);
+	--color-light-300: var(--light-300);
+	--color-light-400: var(--light-400);
+	--color-light-500: var(--light-500);
+	--color-light-600: var(--light-600);
+	--color-light-700: var(--light-700);
+	--color-light-800: var(--light-800);
+	--color-dark-100: var(--dark-100);
+	--color-dark-200: var(--dark-200);
+	--color-dark-300: var(--dark-300);
+	--color-dark-400: var(--dark-400);
+	--color-dark-500: var(--dark-500);
+	--color-dark-600: var(--dark-600);
+	--color-dark-700: var(--dark-700);
+	--color-dark-800: var(--dark-800);
+	--color-gray-100: var(--gray-100);
+	
+	/* Radius System */
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	/* Animation System */
+	--animate-aurora: aurora 8s ease-in-out infinite alternate;
+	@keyframes aurora {
+		0% {
+			background-position: 0% 50%;
+			transform: rotate(-5deg) scale(0.9);
+		}
+		25% {
+			background-position: 50% 100%;
+			transform: rotate(5deg) scale(1.1);
+		}
+		50% {
+			background-position: 100% 50%;
+			transform: rotate(-3deg) scale(0.95);
+		}
+		75% {
+			background-position: 50% 0%;
+			transform: rotate(3deg) scale(1.05);
+		}
+		100% {
+			background-position: 0% 50%;
+			transform: rotate(-5deg) scale(0.9);
+		}
+	}
+	
+	--animate-background-position-spin: background-position-spin 3000ms infinite alternate;
+	@keyframes background-position-spin {
+		0% {
+			background-position: top center;
+		}
+		100% {
+			background-position: bottom center;
+		}
+	}
+}
+
+/* ==========================================================================
+   THEME: DEFAULT (Neutral Slate)
+   Description: Clean, professional slate-based theme with excellent readability
+   Use case: Professional applications, business dashboards, content-focused apps
+   ========================================================================== */
+:root, [data-theme="default"] {
+	--radius: 0.625rem;
+	
+	/* Core Colors - Neutral Slate Palette */
+	--background: oklch(0.99 0.002 247.858); /* Near white */
+	--foreground: oklch(0.15 0.015 260); /* Dark slate gray */
+	
+	/* Card & Surface Colors */
+	--card: oklch(1 0 0); /* Pure white */
+	--card-foreground: oklch(0.15 0.015 260);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.15 0.015 260);
+	
+	/* Primary Colors - Professional Slate Blue */
+	--primary: oklch(0.35 0.03 260); /* Muted slate blue */
+	--primary-admin: oklch(0.45 0.04 260); /* Darker slate for admin */
+	--primary-foreground: oklch(0.98 0.002 260); /* Light text on primary */
+	
+	/* Secondary Colors */
+	--secondary: oklch(0.97 0.005 260); /* Very light slate */
+	--secondary-foreground: oklch(0.25 0.02 260); /* Medium slate */
+	
+	/* Muted Colors */
+	--muted: oklch(0.96 0.005 260);
+	--muted-foreground: oklch(0.55 0.02 260); /* Medium gray */
+	
+	/* Accent Colors */
+	--accent: oklch(0.94 0.01 260); /* Light slate accent */
+	--accent-foreground: oklch(0.25 0.02 260);
+	
+	/* Semantic Colors */
+	--destructive: oklch(0.58 0.20 25); /* Muted red */
+	--border: oklch(0.90 0.01 260); /* Very light borders */
+	--input: oklch(0.95 0.008 260);
+	--ring: oklch(0.55 0.02 260); /* Focus ring */
+	
+	/* Chart Colors - Muted Professional Palette */
+	--chart-1: oklch(0.55 0.12 200); /* Muted blue */
+	--chart-2: oklch(0.60 0.10 150); /* Muted teal */
+	--chart-3: oklch(0.50 0.08 280); /* Muted purple */
+	--chart-4: oklch(0.65 0.15 100); /* Muted green */
+	--chart-5: oklch(0.58 0.12 60); /* Muted amber */
+	
+	/* Sidebar Colors */
+	--sidebar: oklch(0.98 0.002 260);
+	--sidebar-foreground: oklch(0.15 0.015 260);
+	--sidebar-primary: oklch(0.35 0.03 260);
+	--sidebar-primary-foreground: oklch(0.98 0.002 260);
+	--sidebar-accent: oklch(0.94 0.01 260);
+	--sidebar-accent-foreground: oklch(0.25 0.02 260);
+	--sidebar-border: oklch(0.90 0.01 260);
+	--sidebar-ring: oklch(0.55 0.02 260);
+	
+	/* Extended Color Palette - Neutral Tones */
+	--green: oklch(0.55 0.16 150); /* Muted green */
+	--green-100: oklch(0.95 0.05 150);
+	--green-400: oklch(0.65 0.18 150);
+	--green-500: oklch(0.55 0.16 150);
+	--green-800: oklch(0.35 0.12 150);
+	
+	--red: oklch(0.55 0.20 25); /* Muted red */
+	--red-400: oklch(0.70 0.22 25);
+	--red-500: oklch(0.58 0.20 25);
+	--red-800: oklch(0.40 0.18 25);
+	
+	--blue-100: oklch(0.95 0.03 240);
+	
+	/* Light Scale - Neutral Grays */
+	--light-100: oklch(0.98 0.002 260);
+	--light-200: oklch(0.95 0.005 260);
+	--light-300: oklch(0.92 0.008 260);
+	--light-400: oklch(0.85 0.012 260);
+	--light-500: oklch(0.65 0.02 260);
+	--light-600: oklch(0.45 0.025 260);
+	--light-700: oklch(0.35 0.03 260);
+	--light-800: oklch(0.25 0.035 260);
+	
+	/* Dark Scale */
+	--dark-100: oklch(0.15 0.015 260);
+	--dark-200: oklch(0.20 0.02 260);
+	--dark-300: oklch(0.25 0.025 260);
+	--dark-400: oklch(0.30 0.03 260);
+	--dark-500: oklch(0.35 0.035 260);
+	--dark-600: oklch(0.40 0.04 260);
+	--dark-700: oklch(0.45 0.045 260);
+	--dark-800: oklch(0.50 0.05 260);
+	
+	--gray-100: oklch(0.95 0.005 260);
+	
+	/* Gradient Support - Subtle Gradients */
+	--gradient-primary-from: oklch(0.40 0.035 260);
+	--gradient-primary-to: oklch(0.30 0.03 260);
+	--gradient-accent-from: oklch(0.50 0.04 260);
+	--gradient-accent-to: oklch(0.40 0.035 260);
+	--gradient-destructive-from: oklch(0.60 0.21 25);
+	--gradient-destructive-to: oklch(0.50 0.19 25);
+	--gradient-card-from: var(--card);
+	--gradient-card-to: oklch(0.97 0.005 260);
+}
+
+/* ==========================================================================
+   THEME: STONE (Warm Neutral)
+   Description: Warm stone-inspired neutrals with earthy undertones
+   Use case: Content platforms, blogs, e-commerce
+   ========================================================================== */
+[data-theme="stone"] {
+	--primary: oklch(0.40 0.025 80); /* Warm gray */
+	--primary-admin: oklch(0.50 0.03 80);
+	--accent: oklch(0.35 0.02 80);
+	--accent-foreground: oklch(0.95 0.005 80);
+	--background: oklch(0.98 0.003 80); /* Warm white */
+	--card: oklch(0.99 0.002 80);
+	--sidebar: oklch(0.97 0.004 80);
+	--border: oklch(0.88 0.008 80);
+	--muted: oklch(0.94 0.006 80);
+	--green: oklch(0.50 0.14 140);
+	--green-500: oklch(0.50 0.14 140);
+	--gradient-primary-from: oklch(0.45 0.028 80);
+	--gradient-primary-to: oklch(0.35 0.022 80);
+	--gradient-accent-from: oklch(0.55 0.032 80);
+	--gradient-accent-to: oklch(0.45 0.026 80);
+}
+
+/* ==========================================================================
+   THEME: SAGE (Cool Neutral)
+   Description: Cool, sophisticated sage-inspired neutrals
+   Use case: Professional services, finance, healthcare
+   ========================================================================== */
+[data-theme="sage"] {
+	--primary: oklch(0.42 0.03 160); /* Sage green-gray */
+	--primary-admin: oklch(0.48 0.035 160);
+	--accent: oklch(0.38 0.025 160);
+	--accent-foreground: oklch(0.96 0.004 160);
+	--background: oklch(0.98 0.002 160); /* Cool white with green tint */
+	--card: oklch(0.99 0.001 160);
+	--sidebar: oklch(0.97 0.003 160);
+	--border: oklch(0.90 0.006 160);
+	--muted: oklch(0.94 0.005 160);
+	--green: oklch(0.48 0.12 160);
+	--green-500: oklch(0.48 0.12 160);
+	--gradient-primary-from: oklch(0.46 0.032 160);
+	--gradient-primary-to: oklch(0.36 0.026 160);
+	--gradient-accent-from: oklch(0.52 0.036 160);
+	--gradient-accent-to: oklch(0.42 0.030 160);
+}
+
+/* ==========================================================================
+   THEME: SAND (Light Neutral)
+   Description: Light, airy sand-inspired palette
+   Use case: Creative portfolios, lifestyle apps, wellness platforms
+   ========================================================================== */
+[data-theme="sand"] {
+	--primary: oklch(0.45 0.02 70); /* Warm sand */
+	--primary-admin: oklch(0.52 0.025 70);
+	--accent: oklch(0.40 0.018 70);
+	--accent-foreground: oklch(0.95 0.003 70);
+	--background: oklch(0.99 0.001 70); /* Nearly white */
+	--card: oklch(1 0 0);
+	--sidebar: oklch(0.98 0.002 70);
+	--border: oklch(0.92 0.004 70);
+	--muted: oklch(0.96 0.003 70);
+	--green: oklch(0.52 0.13 120);
+	--green-500: oklch(0.52 0.13 120);
+	--gradient-primary-from: oklch(0.48 0.022 70);
+	--gradient-primary-to: oklch(0.38 0.018 70);
+	--gradient-accent-from: oklch(0.55 0.026 70);
+	--gradient-accent-to: oklch(0.45 0.020 70);
+}
+
+/* ==========================================================================
+   THEME: GRAPHITE (Dark Neutral)
+   Description: Sophisticated dark gray palette
+   Use case: Developer tools, dashboards, premium experiences
+   ========================================================================== */
+[data-theme="graphite"] {
+	--primary: oklch(0.65 0.02 260); /* Light gray */
+	--primary-admin: oklch(0.75 0.025 260);
+	--accent: oklch(0.70 0.03 260);
+	--accent-foreground: oklch(0.15 0.015 260);
+	--background: oklch(0.12 0.01 260); /* Dark gray */
+	--card: oklch(0.15 0.012 260);
+	--foreground: oklch(0.95 0.005 260);
+	--card-foreground: oklch(0.95 0.005 260);
+	--sidebar: oklch(0.18 0.014 260);
+	--sidebar-foreground: oklch(0.95 0.005 260);
+	--border: oklch(0.25 0.02 260);
+	--muted: oklch(0.20 0.015 260);
+	--gradient-primary-from: oklch(0.70 0.025 260);
+	--gradient-primary-to: oklch(0.60 0.020 260);
+	--gradient-accent-from: oklch(0.75 0.030 260);
+	--gradient-accent-to: oklch(0.65 0.025 260);
+}
+
+/* ==========================================================================
+   DARK MODE (All Themes)
+   Enhanced dark mode with consistent neutral palette
+   ========================================================================== */
+.dark {
+	--background: oklch(0.12 0.01 260);
+	--foreground: oklch(0.95 0.005 260);
+	--card: oklch(0.15 0.012 260);
+	--card-foreground: oklch(0.95 0.005 260);
+	--popover: oklch(0.15 0.012 260);
+	--popover-foreground: oklch(0.95 0.005 260);
+	--primary: oklch(0.85 0.015 260);
+	--primary-foreground: oklch(0.15 0.012 260);
+	--secondary: oklch(0.20 0.015 260);
+	--secondary-foreground: oklch(0.95 0.005 260);
+	--muted: oklch(0.20 0.015 260);
+	--muted-foreground: oklch(0.65 0.02 260);
+	--accent: oklch(0.25 0.02 260);
+	--accent-foreground: oklch(0.95 0.005 260);
+	--destructive: oklch(0.65 0.18 25);
+	--border: oklch(0.25 0.02 260);
+	--input: oklch(0.25 0.02 260);
+	--ring: oklch(0.60 0.025 260);
+	
+	/* Chart Colors for Dark Mode */
+	--chart-1: oklch(0.55 0.12 200);
+	--chart-2: oklch(0.60 0.10 150);
+	--chart-3: oklch(0.65 0.08 280);
+	--chart-4: oklch(0.70 0.15 100);
+	--chart-5: oklch(0.63 0.12 60);
+	
+	/* Sidebar Colors for Dark Mode */
+	--sidebar: oklch(0.18 0.014 260);
+	--sidebar-foreground: oklch(0.95 0.005 260);
+	--sidebar-primary: oklch(0.85 0.015 260);
+	--sidebar-primary-foreground: oklch(0.18 0.014 260);
+	--sidebar-accent: oklch(0.25 0.02 260);
+	--sidebar-accent-foreground: oklch(0.95 0.005 260);
+	--sidebar-border: oklch(0.25 0.02 260);
+	--sidebar-ring: oklch(0.60 0.025 260);
+	
+	/* Enhanced Gradients for Dark Mode */
+	--gradient-primary-from: oklch(0.80 0.020 260);
+	--gradient-primary-to: oklch(0.70 0.015 260);
+	--gradient-accent-from: oklch(0.75 0.025 260);
+	--gradient-accent-to: oklch(0.65 0.020 260);
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply bg-background text-foreground;
+		font-family: var(--font-ibm-plex-sans), sans-serif;
+	}
+
+	.font-bebas-neue {
+		font-family: var(--font-bebas-neue), sans-serif;
+	}
+}
+
+@layer utilities {
+	/* ==========================================================================
+	   GRADIENT UTILITIES
+	   Reusable gradient classes for consistent styling
+	   ========================================================================== */
+	.bg-primary-gradient {
+		background: linear-gradient(
+			135deg,
+			var(--gradient-primary-from) 0%,
+			var(--gradient-primary-to) 100%
+		);
+	}
+
+	.bg-accent-gradient {
+		background: linear-gradient(
+			135deg,
+			var(--gradient-accent-from) 0%,
+			var(--gradient-accent-to) 100%
+		);
+	}
+
+	.bg-destructive-gradient {
+		background: linear-gradient(
+			135deg,
+			var(--gradient-destructive-from) 0%,
+			var(--gradient-destructive-to) 100%
+		);
+	}
+
+	.bg-card-gradient {
+		background: linear-gradient(
+			145deg,
+			var(--gradient-card-from) 0%,
+			var(--gradient-card-to) 100%
+		);
+	}
+
+	/* Text Gradients */
+	.text-primary-gradient {
+		background-clip: text;
+		-webkit-background-clip: text;
+		color: transparent;
+		background-image: linear-gradient(
+			135deg,
+			var(--gradient-primary-from) 0%,
+			var(--gradient-primary-to) 100%
+		);
+	}
+
+	.text-accent-gradient {
+		background-clip: text;
+		-webkit-background-clip: text;
+		color: transparent;
+		background-image: linear-gradient(
+			135deg,
+			var(--gradient-accent-from) 0%,
+			var(--gradient-accent-to) 100%
+		);
+	}
+
+	/* Glass Morphism Effect */
+	.bg-glass {
+		backdrop-filter: blur(16px);
+		background-color: rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	.dark .bg-glass {
+		background-color: rgba(15, 23, 42, 0.5);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	/* Theme Transition */
+	.theme-transition {
+		transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+	}
+
+	/* Neutral shadow utilities */
+	.shadow-subtle {
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	.shadow-gentle {
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+	}
+}
