@@ -41,7 +41,7 @@
 	--color-popover: var(--popover);
 	--color-card-foreground: var(--card-foreground);
 	--color-card: var(--card);
-	
+
 	/* Color System - Updated with neutral palette */
 	--color-green: var(--green);
 	--color-green-100: var(--green-100);
@@ -70,7 +70,7 @@
 	--color-dark-700: var(--dark-700);
 	--color-dark-800: var(--dark-800);
 	--color-gray-100: var(--gray-100);
-	
+
 	/* Radius System */
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
@@ -95,13 +95,17 @@
 		75% {
 			background-position: 50% 0%;
 			transform: rotate(3deg) scale(1.05);
-		}
+			-webkit-transform: rotate(3deg) scale(1.05);
+			-moz-transform: rotate(3deg) scale(1.05);
+			-ms-transform: rotate(3deg) scale(1.05);
+			-o-transform: rotate(3deg) scale(1.05);
+}
 		100% {
 			background-position: 0% 50%;
 			transform: rotate(-5deg) scale(0.9);
 		}
 	}
-	
+
 	--animate-background-position-spin: background-position-spin 3000ms infinite alternate;
 	@keyframes background-position-spin {
 		0% {
@@ -111,7 +115,13 @@
 			background-position: bottom center;
 		}
 	}
-}
+	--animate-line-shadow: line-shadow 15s linear infinite
+;
+  @keyframes line-shadow {
+  0% {
+    background-position: 0 0;}
+  100% {
+    background-position: 100% -100%;}}}
 
 /* ==========================================================================
    THEME: DEFAULT (Neutral Slate)
@@ -120,47 +130,47 @@
    ========================================================================== */
 :root, [data-theme="default"] {
 	--radius: 0.625rem;
-	
+
 	/* Core Colors - Neutral Slate Palette */
 	--background: oklch(0.99 0.002 247.858); /* Near white */
 	--foreground: oklch(0.15 0.015 260); /* Dark slate gray */
-	
+
 	/* Card & Surface Colors */
 	--card: oklch(1 0 0); /* Pure white */
 	--card-foreground: oklch(0.15 0.015 260);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.15 0.015 260);
-	
+
 	/* Primary Colors - Professional Slate Blue */
-	--primary: oklch(0.35 0.03 260); /* Muted slate blue */
+	--primary: oklch(0.50 0.08 280);
 	--primary-admin: oklch(0.45 0.04 260); /* Darker slate for admin */
 	--primary-foreground: oklch(0.98 0.002 260); /* Light text on primary */
-	
+
 	/* Secondary Colors */
 	--secondary: oklch(0.97 0.005 260); /* Very light slate */
 	--secondary-foreground: oklch(0.25 0.02 260); /* Medium slate */
-	
+
 	/* Muted Colors */
 	--muted: oklch(0.96 0.005 260);
 	--muted-foreground: oklch(0.55 0.02 260); /* Medium gray */
-	
+
 	/* Accent Colors */
 	--accent: oklch(0.94 0.01 260); /* Light slate accent */
 	--accent-foreground: oklch(0.25 0.02 260);
-	
+
 	/* Semantic Colors */
 	--destructive: oklch(0.58 0.20 25); /* Muted red */
 	--border: oklch(0.90 0.01 260); /* Very light borders */
 	--input: oklch(0.95 0.008 260);
 	--ring: oklch(0.55 0.02 260); /* Focus ring */
-	
+
 	/* Chart Colors - Muted Professional Palette */
 	--chart-1: oklch(0.55 0.12 200); /* Muted blue */
 	--chart-2: oklch(0.60 0.10 150); /* Muted teal */
 	--chart-3: oklch(0.50 0.08 280); /* Muted purple */
 	--chart-4: oklch(0.65 0.15 100); /* Muted green */
 	--chart-5: oklch(0.58 0.12 60); /* Muted amber */
-	
+
 	/* Sidebar Colors */
 	--sidebar: oklch(0.98 0.002 260);
 	--sidebar-foreground: oklch(0.15 0.015 260);
@@ -170,21 +180,21 @@
 	--sidebar-accent-foreground: oklch(0.25 0.02 260);
 	--sidebar-border: oklch(0.90 0.01 260);
 	--sidebar-ring: oklch(0.55 0.02 260);
-	
+
 	/* Extended Color Palette - Neutral Tones */
 	--green: oklch(0.55 0.16 150); /* Muted green */
 	--green-100: oklch(0.95 0.05 150);
 	--green-400: oklch(0.65 0.18 150);
 	--green-500: oklch(0.55 0.16 150);
 	--green-800: oklch(0.35 0.12 150);
-	
+
 	--red: oklch(0.55 0.20 25); /* Muted red */
 	--red-400: oklch(0.70 0.22 25);
 	--red-500: oklch(0.58 0.20 25);
 	--red-800: oklch(0.40 0.18 25);
-	
+
 	--blue-100: oklch(0.95 0.03 240);
-	
+
 	/* Light Scale - Neutral Grays */
 	--light-100: oklch(0.98 0.002 260);
 	--light-200: oklch(0.95 0.005 260);
@@ -194,7 +204,7 @@
 	--light-600: oklch(0.45 0.025 260);
 	--light-700: oklch(0.35 0.03 260);
 	--light-800: oklch(0.25 0.035 260);
-	
+
 	/* Dark Scale */
 	--dark-100: oklch(0.15 0.015 260);
 	--dark-200: oklch(0.20 0.02 260);
@@ -204,9 +214,9 @@
 	--dark-600: oklch(0.40 0.04 260);
 	--dark-700: oklch(0.45 0.045 260);
 	--dark-800: oklch(0.50 0.05 260);
-	
+
 	--gray-100: oklch(0.95 0.005 260);
-	
+
 	/* Gradient Support - Subtle Gradients */
 	--gradient-primary-from: oklch(0.40 0.035 260);
 	--gradient-primary-to: oklch(0.30 0.03 260);
@@ -334,14 +344,14 @@
 	--border: oklch(0.25 0.02 260);
 	--input: oklch(0.25 0.02 260);
 	--ring: oklch(0.60 0.025 260);
-	
+
 	/* Chart Colors for Dark Mode */
 	--chart-1: oklch(0.55 0.12 200);
 	--chart-2: oklch(0.60 0.10 150);
 	--chart-3: oklch(0.65 0.08 280);
 	--chart-4: oklch(0.70 0.15 100);
 	--chart-5: oklch(0.63 0.12 60);
-	
+
 	/* Sidebar Colors for Dark Mode */
 	--sidebar: oklch(0.18 0.014 260);
 	--sidebar-foreground: oklch(0.95 0.005 260);
@@ -351,7 +361,7 @@
 	--sidebar-accent-foreground: oklch(0.95 0.005 260);
 	--sidebar-border: oklch(0.25 0.02 260);
 	--sidebar-ring: oklch(0.60 0.025 260);
-	
+
 	/* Enhanced Gradients for Dark Mode */
 	--gradient-primary-from: oklch(0.80 0.020 260);
 	--gradient-primary-to: oklch(0.70 0.015 260);

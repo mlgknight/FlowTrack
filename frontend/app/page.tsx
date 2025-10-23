@@ -10,9 +10,12 @@ const Home = () => (
 		<Particles className='absolute inset-0 z-0' color='#fff' />
 
 		<div className='relative z-10 flex flex-col justify-center items-center w-full min-h-screen gap-6 lg:gap-10 px-4 py-12'>
-			<AuroraText className='font-bold text-4xl lg:text-7xl text-transparent bg-clip-text text-center animate-in fade-in duration-700'>
-				TaskFlow
-			</AuroraText>
+			<h1 className='font-bold flex text-4xl lg:text-7xl bg-clip-text text-center animate-in fade-in duration-700'>
+				<span className='italic block col text-light-300'>Task</span>
+				<AuroraText className='font-bold text-4xl lg:text-7xl text-transparent bg-clip-text text-center'>
+					Flow
+				</AuroraText>
+			</h1>
 
 			<TypingAnimation className='font-bold text-3xl lg:text-6xl text-light-100 text-center'>
 				Get things done, effortlessly
@@ -38,7 +41,7 @@ const Home = () => (
 				</Link>
 			</div>
 
-			<div className='grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mt-16 max-w-5xl w-full'>
+			<div className=' cursor-pointer grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mt-16 max-w-5xl w-full'>
 				<div className='flex flex-col items-center text-center p-8 rounded-xl bg-card/30 backdrop-blur-md border border-primary/30 hover:border-primary/60 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20'>
 					<div className='text-5xl mb-4'>✓</div>
 					<h3 className='text-light-100 font-semibold text-xl mb-3'>
@@ -48,7 +51,7 @@ const Home = () => (
 						Add tasks in seconds with natural language processing
 					</p>
 				</div>
-				<div className='flex flex-col items-center text-center p-8 rounded-xl bg-card/30 backdrop-blur-md border border-primary/30 hover:border-primary/60 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20'>
+				<div className=' cursor-pointer flex flex-col items-center text-center p-8 rounded-xl bg-card/30 backdrop-blur-md border border-primary/30 hover:border-primary/60 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20'>
 					<div className='text-5xl mb-4'>📅</div>
 					<h3 className='text-light-100 font-semibold text-xl mb-3'>
 						Smart Scheduling
@@ -57,7 +60,7 @@ const Home = () => (
 						Organize by projects, priorities, and due dates
 					</p>
 				</div>
-				<div className='flex flex-col items-center text-center p-8 rounded-xl bg-card/30 backdrop-blur-md border border-primary/30 hover:border-primary/60 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20'>
+				<div className=' cursor-pointer flex flex-col items-center text-center p-8 rounded-xl bg-card/30 backdrop-blur-md border border-primary/30 hover:border-primary/60 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20'>
 					<div className='text-5xl mb-4'>🚀</div>
 					<h3 className='text-light-100 font-semibold text-xl mb-3'>
 						Stay Productive

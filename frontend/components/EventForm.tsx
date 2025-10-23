@@ -1,10 +1,4 @@
-import {
-	type FormEvent,
-	useRef,
-	type Ref,
-	useState,
-	useEffect,
-} from 'react';
+import { type FormEvent, useRef, type Ref, useState, useEffect } from 'react';
 import type { TogglableHandle } from './Togglable';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { createEvent } from '../store/slices/eventsSlice';
@@ -96,12 +90,18 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 					{displayError}
 				</div>
 			)}
-			<form className='bg-card border border-border rounded-xl shadow-lg p-6 space-y-4' onSubmit={handleFormSubmit}>
+			<form
+				className='bg-card border border-border rounded-xl shadow-lg p-6 space-y-4'
+				onSubmit={handleFormSubmit}
+			>
 				<div className='space-y-2'>
-					<label htmlFor='title' className='block text-sm font-medium text-card-foreground'>
+					<label
+						htmlFor='title'
+						className='block text-sm font-medium text-card-foreground'
+					>
 						Event Title <span className='text-destructive'>*</span>
 					</label>
-					<input 
+					<input
 						ref={titleRef}
 						id='title'
 						type='text'
@@ -112,10 +112,13 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 				</div>
 
 				<div className='space-y-2'>
-					<label htmlFor='description' className='block text-sm font-medium text-card-foreground'>
+					<label
+						htmlFor='description'
+						className='block text-sm font-medium text-card-foreground'
+					>
 						Description
 					</label>
-					<textarea 
+					<textarea
 						ref={descriptionRef}
 						id='description'
 						placeholder='Add a description (optional)'
@@ -126,10 +129,13 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 
 				<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 					<div className='space-y-2'>
-						<label htmlFor='start' className='block text-sm font-medium text-card-foreground'>
+						<label
+							htmlFor='start'
+							className='block text-sm font-medium text-card-foreground'
+						>
 							Start Time <span className='text-destructive'>*</span>
 						</label>
-						<input 
+						<input
 							ref={startRef}
 							id='start'
 							type='datetime-local'
@@ -139,10 +145,13 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 					</div>
 
 					<div className='space-y-2'>
-						<label htmlFor='end' className='block text-sm font-medium text-card-foreground'>
+						<label
+							htmlFor='end'
+							className='block text-sm font-medium text-card-foreground'
+						>
 							End Time
 						</label>
-						<input 
+						<input
 							ref={endRef}
 							id='end'
 							type='datetime-local'
@@ -151,9 +160,9 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 					</div>
 				</div>
 
-				<button 
+				<button
 					type='submit'
-					className='w-full mt-6 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
+					className=' cursor-pointer w-full mt-6 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
 				>
 					Save Event
 				</button>

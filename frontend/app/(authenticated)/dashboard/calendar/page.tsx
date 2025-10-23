@@ -171,7 +171,7 @@ const Calendar = () => {
 							<div className='flex gap-3 mt-6'>
 								<button
 									onClick={() => setIsOpen(false)}
-									className='flex-1 px-4 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity'
+									className=' cursor-pointer flex-1 px-2 py-2.5  bg-primary text-primary-foreground rounded-md font-medium hover:opacity-90 transition-opacity'
 								>
 									Close
 								</button>
