@@ -28,16 +28,14 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { initializeUser, logout } from '../../store/slices/userSlice';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { fetchEvents } from '@/store/slices/eventsSlice';
-import Loading from '@/components/Loading';
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+	// Redux logic related to user
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.user.user);
 	const isOnline = useAppSelector((state) => state.user.isOnline);
 	const router = useRouter();
 	const pathname = usePathname();
-	const loading = useAppSelector((state) => state.events.loading);
 
 	const menuItems = [
 		{ path: '/dashboard', icon: Home, label: 'Dashboard' },
@@ -45,13 +43,10 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 		{ path: '/dashboard/calendar', icon: Calendar, label: 'Calendar' },
 		{ path: '/dashboard/settings', icon: Settings, label: 'Settings' },
 	];
-
 	// ✅ Initialize user and check token expiration
 	useEffect(() => {
 		// Initialize user from localStorage on mount
 		dispatch(initializeUser());
-
-		dispatch(fetchEvents());
 
 		// Check token expiration every 30 seconds
 		const interval = setInterval(() => {
@@ -82,10 +77,6 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 			router.push('/login');
 		}
 	}, [isOnline, router]);
-
-	if (loading) {
-		return <Loading />;
-	}
 
 	return (
 		<SidebarProvider>

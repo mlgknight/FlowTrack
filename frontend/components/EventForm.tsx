@@ -1,23 +1,20 @@
 import { type FormEvent, useRef, type Ref, useState, useEffect } from 'react';
 import type { TogglableHandle } from './Togglable';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { createEvent } from '../store/slices/eventsSlice';
+import { useCreateEvent } from '@/queries/events';
 
 interface EventFormProps {
 	eventFormRef?: Ref<TogglableHandle>;
 }
 
 const EventForm = ({ eventFormRef }: EventFormProps) => {
-	const dispatch = useAppDispatch();
-
 	// Input refs
 	const titleRef = useRef<HTMLInputElement>(null);
 	const descriptionRef = useRef<HTMLTextAreaElement>(null);
 	const startRef = useRef<HTMLInputElement>(null);
 	const endRef = useRef<HTMLInputElement>(null);
 
-	const apiError = useAppSelector((state) => state.events.error);
 	const [validationError, setValidationError] = useState<string | null>(null);
+	const { mutate, error } = useCreateEvent();
 
 	// Auto-clear validation error
 	useEffect(() => {
@@ -26,16 +23,6 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 			return () => clearTimeout(timer);
 		}
 	}, [validationError]);
-
-	// Auto-clear API error
-	useEffect(() => {
-		if (apiError) {
-			const timer = setTimeout(() => {
-				// dispatch(clearError()) if you implement it
-			}, 5000);
-			return () => clearTimeout(timer);
-		}
-	}, [apiError]);
 
 	const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -60,7 +47,7 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 				backgroundColor: '#3B82F6',
 			};
 
-			await dispatch(createEvent(newEvent)).unwrap();
+			mutate(newEvent);
 
 			// Clear fields
 			if (titleRef.current) titleRef.current.value = '';
@@ -81,7 +68,7 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 		}
 	};
 
-	const displayError = validationError || apiError;
+	const displayError = error ? error.message : validationError;
 
 	return (
 		<div className='w-full max-w-2xl mx-auto'>
