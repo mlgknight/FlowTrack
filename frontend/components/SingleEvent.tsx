@@ -2,13 +2,26 @@
 
 import type { Event } from '../types';
 import confetti from 'canvas-confetti';
-import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useState } from 'react';
 
 interface SingleEventProps {
 	event: Event;
 }
 
 const SingleEvent = ({ event }: SingleEventProps) => {
+	const [toggle, setToggle] = useState<boolean>(false);
+
+	let buttonClassNames: string;
+
+	if (toggle) {
+		buttonClassNames =
+			'line-through font-semibold text-lg text-card-foreground group-hover:text-primary transition-colors';
+	} else {
+		buttonClassNames =
+			'font-semibold text-lg text-card-foreground group-hover:text-primary transition-colors';
+	}
+
 	const getStatusConfig = (status: Event['status']) => {
 		switch (status) {
 			case 'confirmed':
@@ -40,6 +53,7 @@ const SingleEvent = ({ event }: SingleEventProps) => {
 	};
 
 	const handleCompleteEvent = () => {
+		setToggle(!toggle);
 		const defaults = {
 			spread: 360,
 			ticks: 50,
@@ -73,24 +87,24 @@ const SingleEvent = ({ event }: SingleEventProps) => {
 
 	return (
 		<li className='bg-card border border-border rounded-lg p-4 hover:border-primary/50 hover:shadow-md transition-all duration-200 group relative'>
-			<div className='flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3'>
-				<div className='flex-1 space-y-2'>
-					<input
+			<div className='flex flex-row sm:flex sm:items-start sm:justify-between gap-3'>
+				<div className='flex items-start gap-3'>
+					<Checkbox
+						className='cursor-pointer rounded-xl w-6 h-6'
 						onClick={handleCompleteEvent}
-						type='checkbox'
 						id={`checkbox-${event.title}`}
 					/>
-					<h3 className='font-semibold text-lg text-card-foreground group-hover:text-primary transition-colors'>
-						{event.title}
-					</h3>
+					<div className='flex flex-col'>
+						<h3 className={buttonClassNames}>{event.title}</h3>
 
-					{event.description && (
-						<p className='text-sm text-muted-foreground leading-relaxed'>
-							{event.description}
-						</p>
-					)}
-
-					<div className='flex items-center gap-2 text-xs text-muted-foreground'>
+						{event.description && (
+							<p className='text-sm text-muted-foreground leading-relaxed'>
+								{event.description}
+							</p>
+						)}
+					</div>
+					{/* move date into the same column so it stacks under the title/description */}
+					<div className='flex items-center gap-2 text-xs text-muted-foreground mt-2'>
 						<svg
 							className='w-4 h-4'
 							fill='none'
