@@ -76,7 +76,7 @@ const LoginForm = () => {
 	};
 
 	return (
-		<div className='w-full max-w-md space-y-6'>
+		<section className='w-full max-w-md space-y-6'>
 			{localError && (
 				<Alert
 					variant='destructive'
@@ -86,7 +86,7 @@ const LoginForm = () => {
 					<AlertDescription className='ml-2'>{localError}</AlertDescription>
 				</Alert>
 			)}
-			
+
 			<Card className='w-full border-primary/30 bg-dark-100/80 backdrop-blur-md shadow-2xl'>
 				<CardHeader className='space-y-3'>
 					<CardTitle className='text-3xl font-bold text-light-100'>
@@ -99,7 +99,10 @@ const LoginForm = () => {
 				<CardContent>
 					<form onSubmit={handleLogin} className='flex flex-col space-y-6'>
 						<div className='space-y-2'>
-							<Label htmlFor='username' className='text-light-200 text-sm font-medium'>
+							<Label
+								htmlFor='username'
+								className='text-light-200 text-sm font-medium'
+							>
 								Username
 							</Label>
 							<Input
@@ -114,7 +117,10 @@ const LoginForm = () => {
 						</div>
 
 						<div className='space-y-2'>
-							<Label htmlFor='password' className='text-light-200 text-sm font-medium'>
+							<Label
+								htmlFor='password'
+								className='text-light-200 text-sm font-medium'
+							>
 								Password
 							</Label>
 							<Input
@@ -145,7 +151,7 @@ const LoginForm = () => {
 					</form>
 				</CardContent>
 			</Card>
-		</div>
+		</section>
 	);
 };
 

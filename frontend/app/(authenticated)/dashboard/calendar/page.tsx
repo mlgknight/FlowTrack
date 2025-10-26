@@ -18,17 +18,27 @@ const Calendar = () => {
 	const { data: events = [], error, isError, isLoading } = useEvents();
 	const { mutate: updateEvent } = useUpdateEvent();
 	// Map your events to FullCalendar format
-	const calendarEvents = events.map((event) => ({
-		id: event.id,
-		title: event.title,
-		start: event.start,
-		end: event.end,
-		backgroundColor: event.backgroundColor,
-		extendedProps: {
-			description: event.description,
-			status: event.status,
-		},
-	}));
+	const calendarEvents = events.map((event) => {
+		const startDate = new Date(event.start);
+		const endDate = event.end ? new Date(event.end) : startDate;
+		const durationMs = endDate.getTime() - startDate.getTime();
+		const durationDays = durationMs / (1000 * 60 * 60 * 24);
+
+		const isMultiDay = durationDays >= 1;
+		const multiDayColor = '#88E788';
+
+		return {
+			id: event.id,
+			title: event.title,
+			start: event.start,
+			end: event.end,
+			backgroundColor: isMultiDay ? multiDayColor : event.backgroundColor,
+			extendedProps: {
+				description: event.description,
+				status: event.status,
+			},
+		};
+	});
 
 	const handleEventClick = (clickInfo: EventClickArg) => {
 		setSelectedEvent({
@@ -93,14 +103,25 @@ const Calendar = () => {
 								center: 'title',
 								right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
 							}}
+							buttonText={{
+								today: 'Go to Today',
+								month: 'Month View',
+								week: 'Week View',
+								day: 'Day View',
+								list: 'Agenda',
+							}}
 							initialView='dayGridMonth'
-							weekends={true}
-							editable={true}
+							weekends
+							editable
 							eventDrop={handleEventDrop}
 							events={calendarEvents}
 							eventClick={handleEventClick}
 							eventClassNames='cursor-pointer hover:opacity-80 transition-opacity'
 							height='auto'
+							firstDay={1}
+							selectable
+							unselectAuto
+							dayHeaderFormat={{ weekday: 'long' }}
 						/>
 					</div>
 
