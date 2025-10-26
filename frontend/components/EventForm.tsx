@@ -3,6 +3,7 @@ import type { TogglableHandle } from './Togglable';
 import { useCreateEvent } from '@/queries/events';
 import Togglable from './Togglable';
 
+
 interface EventFormProps {
 	eventFormRef?: Ref<TogglableHandle>;
 }

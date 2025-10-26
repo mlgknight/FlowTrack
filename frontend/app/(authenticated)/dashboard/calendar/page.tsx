@@ -10,12 +10,13 @@ import type { EventClickArg, EventDropArg } from '@fullcalendar/core';
 import Loading from '@/components/Loading';
 import { useEvents } from '@/queries/events';
 import type { Event } from '@/types';
+import { useUpdateEvent } from '@/queries/events';
 
 const Calendar = () => {
 	const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const { data: events = [], error, isError, isLoading } = useEvents();
-
+	const { mutate: updateEvent } = useUpdateEvent();
 	// Map your events to FullCalendar format
 	const calendarEvents = events.map((event) => ({
 		id: event.id,
@@ -49,13 +50,16 @@ const Calendar = () => {
 	};
 
 	const handleEventDrop = (dropInfo: EventDropArg) => {
-		console.log('Event moved:', {
+		updateEvent({
 			id: dropInfo.event.id,
-			newStart: dropInfo.event.start,
-			newEnd: dropInfo.event.end,
+			title: dropInfo.event.title,
+			start: dropInfo.event.start?.toISOString() || '',
+			end: dropInfo.event.end?.toISOString(),
+			description: dropInfo.event.extendedProps['description'] as string,
+			status: dropInfo.event.extendedProps['status'] as Event['status'],
+			backgroundColor: dropInfo.event.backgroundColor,
+			user: (dropInfo.event.extendedProps['user'] as string) || '',
 		});
-
-		// You can dispatch an update to Redux here when needed
 	};
 
 	if (isLoading) {

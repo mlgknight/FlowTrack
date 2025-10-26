@@ -1,7 +1,7 @@
 'use client';
 
 import axios from 'axios';
-import type { Event } from '../types';
+import type { Event, NewEvent } from '../types';
 
 const baseUrl = 'http://localhost:3001/api/events';
 
@@ -53,7 +53,7 @@ const create = async (newObject: Event) => {
 	}
 };
 
-const update = async (id: string, newObject: Event) => {
+const update = async (id: string, newObject: NewEvent) => {
 	initializeToken(); // Initialize lazily when first API call is made
 	try {
 		const response = await axios.put(`${baseUrl}/${id}`, newObject);
