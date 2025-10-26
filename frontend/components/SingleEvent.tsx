@@ -5,6 +5,7 @@ import confetti from 'canvas-confetti';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useState } from 'react';
 
+
 interface SingleEventProps {
 	event: Event;
 }

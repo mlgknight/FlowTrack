@@ -1,12 +1,7 @@
 'use client';
 
-import {
-	useState,
-	useImperativeHandle,
-	type ReactNode,
-	type Ref,
-} from 'react';
-
+import { useState, useImperativeHandle, type ReactNode, type Ref } from 'react';
+import { Button } from '@/components/ui/button';
 
 export interface TogglableHandle {
 	toggleVisibility: () => void;
@@ -35,15 +30,15 @@ const Togglable = ({ buttonLabel, children, ref }: TogglableProps) => {
 	});
 
 	return (
-		<div className="togglable">
+		<div className='togglable'>
 			<div style={hideWhenVisible}>
-				<button onClick={toggleVisibility}>{buttonLabel}</button>
+				<Button className=' m-3 cursor-pointer' onClick={toggleVisibility}>{buttonLabel}</Button>
 			</div>
-			<div className="togglable-content" style={showWhenVisible}>
+			<div className='togglable-content' style={showWhenVisible}>
 				{children}
-				<button className="cancel-btn" onClick={toggleVisibility}>
+				<Button className=' m-3 cursor-pointer' onClick={toggleVisibility}>
 					cancel
-				</button>
+				</Button>
 			</div>
 		</div>
 	);
