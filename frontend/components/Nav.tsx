@@ -4,19 +4,15 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { useAppSelector } from '../store/hooks';
-
+import { Button } from '@/components/ui/button';
 import {
 	NavigationMenu,
 	NavigationMenuList,
 	NavigationMenuItem,
+	NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const Nav = () => {
 	const { isOnline } = useAppSelector((state) => state.user);
@@ -36,61 +32,83 @@ const Nav = () => {
 		return null;
 	}
 
+	const navItems = [
+		{ href: '/', label: 'Home' },
+		{ href: '/about', label: 'About' },
+		{ href: '/explore', label: 'Explore' },
+	];
+
 	return (
-		<nav className='sticky top-0 z-50 w-full border-b border-primary bg-dark-100'>
+		<nav className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
 			<div className='mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-8'>
-				{/* Mobile Menu */}
-				<div className='lg:hidden'>
-					<DropdownMenu>
-						<DropdownMenuTrigger className='rounded-md p-2 hover:bg-dark-200 focus:outline-none focus:ring-2 focus:ring-primary'>
-							<Menu className='h-5 w-5 text-light-300' />
-						</DropdownMenuTrigger>
-						<DropdownMenuContent className='w-56 border border-primary bg-dark-100 text-light-300'>
-							{['/', '/about', '/explore'].map((path, i) => (
-								<DropdownMenuItem key={path} asChild>
-									<Link
-										href={path}
-										className='w-full cursor-pointer rounded-md px-3 py-2 text-sm hover:bg-dark-200'
-									>
-										{['Home', 'About', 'Explore'][i]}
-									</Link>
-								</DropdownMenuItem>
-							))}
-						</DropdownMenuContent>
-					</DropdownMenu>
+				{/* Logo/Brand */}
+				<div className='flex items-center'>
+					<Link href='/' className='text-xl font-bold text-foreground'>
+						TaskFlow
+					</Link>
 				</div>
 
-				{/* Desktop Nav */}
-				<NavigationMenu className='hidden text-light-300 lg:block'>
-					<NavigationMenuList className='flex items-center space-x-1 lg:space-x-3'>
-						{['/', '/about', '/explore'].map((path, i) => (
-							<NavigationMenuItem key={path}>
-								<Link
-									href={path}
-									className='rounded-md px-3 py-2 text-sm transition-colors hover:bg-dark-200 hover:text-light-100 lg:px-4 lg:text-base'
-								>
-									{['Home', 'About', 'Explore'][i]}
-								</Link>
+				{/* Desktop Navigation */}
+				<NavigationMenu className='hidden lg:flex'>
+					<NavigationMenuList className='gap-2'>
+						{navItems.map((item) => (
+							<NavigationMenuItem key={item.href}>
+								<NavigationMenuLink asChild>
+									<Link
+										href={item.href}
+										className='group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50'
+									>
+										{item.label}
+									</Link>
+								</NavigationMenuLink>
 							</NavigationMenuItem>
 						))}
 					</NavigationMenuList>
 				</NavigationMenu>
 
-				{/* Auth Buttons */}
-				<div className='flex items-center space-x-2 lg:space-x-4'>
-					<Link
-						href='/login'
-						className='rounded-md px-3 py-2 text-sm text-light-300 transition-colors hover:bg-dark-200 hover:text-light-100 lg:px-4 lg:text-base'
-					>
-						Login
-					</Link>
-					<Link
-						href='/signup'
-						className='rounded-lg bg-primary bg-primary-gradient px-3 py-2 text-sm text-primary-foreground shadow-lg shadow-purple-500/20 transition-colors hover:bg-primary/90 hover:shadow-purple-500/30 lg:px-4 lg:text-base'
-					>
-						Get Started
-					</Link>
+				{/* Desktop Auth Buttons */}
+				<div className='hidden items-center space-x-2 lg:flex'>
+					<Button asChild variant='ghost' size='sm'>
+						<Link href='/login'>Login</Link>
+					</Button>
+					<Button asChild size='sm'>
+						<Link href='/signup'>Get Started</Link>
+					</Button>
 				</div>
+
+				{/* Mobile Menu */}
+				<Sheet>
+					<SheetTrigger asChild className='lg:hidden'>
+						<Button variant='ghost' size='icon'>
+							<Menu className='h-5 w-5' />
+							<span className='sr-only'>Toggle menu</span>
+						</Button>
+					</SheetTrigger>
+					<SheetContent side='right' className='w-[300px] sm:w-[400px]'>
+						<div className='flex flex-col gap-6'>
+							<div className='flex flex-col gap-2'>
+								{navItems.map((item) => (
+									<Button
+										key={item.href}
+										asChild
+										variant='ghost'
+										className='w-full justify-start'
+									>
+										<Link href={item.href}>{item.label}</Link>
+									</Button>
+								))}
+							</div>
+							<div className='flex flex-col gap-2 border-t pt-4'>
+								<Button asChild variant='outline' className='w-full'>
+									<Link href='/login'>Login</Link>
+								</Button>
+								<Button asChild className='w-full'>
+									<Link href='/signup'>Get Started</Link>
+								</Button>
+							</div>
+						</div>
+					</SheetContent>
+				</Sheet>
 			</div>
 		</nav>
 	);
