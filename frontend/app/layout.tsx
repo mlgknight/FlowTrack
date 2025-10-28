@@ -1,7 +1,7 @@
+
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-
 import Nav from '../components/Nav';
 import Providers from '../components/Providers';
 
@@ -32,11 +32,9 @@ export default function RootLayout({
 			>
 				<Providers>
 					<Nav />
-					<div className='min-h-screen'>
-						{children}
-					</div>
+					<main className='min-h-screen'>{children}</main>
 				</Providers>
 			</body>
 		</html>
 	);
-};
+}

@@ -1,8 +1,7 @@
-import { type FormEvent, useRef, type Ref, useState, useEffect } from 'react';
+import { type FormEvent, useRef, type Ref } from 'react';
 import type { TogglableHandle } from './Togglable';
 import { useCreateEvent } from '@/queries/events';
 import Togglable from './Togglable';
-
 
 interface EventFormProps {
 	eventFormRef?: Ref<TogglableHandle>;
@@ -15,16 +14,7 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 	const startRef = useRef<HTMLInputElement>(null);
 	const endRef = useRef<HTMLInputElement>(null);
 
-	const [validationError, setValidationError] = useState<string | null>(null);
 	const { mutate, error } = useCreateEvent();
-
-	// Auto-clear validation error
-	useEffect(() => {
-		if (validationError) {
-			const timer = setTimeout(() => setValidationError(null), 5000);
-			return () => clearTimeout(timer);
-		}
-	}, [validationError]);
 
 	const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -35,7 +25,6 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 		const end = endRef.current?.value || '';
 
 		if (!title || !start) {
-			setValidationError('Title and start date are required');
 			return;
 		}
 
@@ -70,7 +59,9 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 		}
 	};
 
-	const displayError = error ? error.message : validationError;
+	const displayError = error && error.message;
+
+	console.log(error?.message)
 
 	return (
 		<div className='w-full max-w-2xl mx-auto'>

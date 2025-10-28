@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { useAppSelector } from '../store/hooks';
@@ -18,10 +19,21 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const Nav = () => {
-	const isLoggedIn = useAppSelector((state) => state.user.isOnline);
+	const { isOnline } = useAppSelector((state) => state.user);
+	const [mounted, setMounted] = useState(false);
 
-	if (isLoggedIn) {
-		return;
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	// ✅ Don't render until mounted (prevents flash)
+	if (!mounted) {
+		return null;
+	}
+
+	// ✅ Don't show Nav if user is logged in
+	if (isOnline) {
+		return null;
 	}
 
 	return (
@@ -64,31 +76,20 @@ const Nav = () => {
 					</NavigationMenuList>
 				</NavigationMenu>
 
-				{/* Auth Buttons - Conditional rendering here */}
-
+				{/* Auth Buttons */}
 				<div className='flex items-center space-x-2 lg:space-x-4'>
-					{isLoggedIn && (
-						<Link
-							href='/dashboard'
-							className='rounded-lg bg-primary bg-primary-gradient px-3 py-2 text-sm text-primary-foreground shadow-lg shadow-purple-500/20 transition-colors hover:bg-primary/90 hover:shadow-purple-500/30 lg:px-4 lg:text-base'
-						>
-							Dashboard
-						</Link>
-					)}
-					<>
-						<Link
-							href='/login'
-							className='rounded-md px-3 py-2 text-sm text-light-300 transition-colors hover:bg-dark-200 hover:text-light-100 lg:px-4 lg:text-base'
-						>
-							Login
-						</Link>
-						<Link
-							href='/signup'
-							className='rounded-lg bg-primary bg-primary-gradient px-3 py-2 text-sm text-primary-foreground shadow-lg shadow-purple-500/20 transition-colors hover:bg-primary/90 hover:shadow-purple-500/30 lg:px-4 lg:text-base'
-						>
-							Get Started
-						</Link>
-					</>
+					<Link
+						href='/login'
+						className='rounded-md px-3 py-2 text-sm text-light-300 transition-colors hover:bg-dark-200 hover:text-light-100 lg:px-4 lg:text-base'
+					>
+						Login
+					</Link>
+					<Link
+						href='/signup'
+						className='rounded-lg bg-primary bg-primary-gradient px-3 py-2 text-sm text-primary-foreground shadow-lg shadow-purple-500/20 transition-colors hover:bg-primary/90 hover:shadow-purple-500/30 lg:px-4 lg:text-base'
+					>
+						Get Started
+					</Link>
 				</div>
 			</div>
 		</nav>

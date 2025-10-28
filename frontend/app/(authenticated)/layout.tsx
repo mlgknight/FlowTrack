@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
 	Sidebar,
 	SidebarContent,
@@ -24,59 +23,30 @@ import {
 	NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 import { Home, CheckSquare, Calendar, Settings, Plus } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { initializeUser, logout } from '../../store/slices/userSlice';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-
+import { useAuthGuard } from '@/hooks/useAuthGuard';
+import { useHasMounted } from '@/hooks/useHasMounted';
+import Loading from '@/components/Loading';
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
-	// Redux logic related to user
-	const dispatch = useAppDispatch();
-	const user = useAppSelector((state) => state.user.user);
-	const isOnline = useAppSelector((state) => state.user.isOnline);
-	const router = useRouter();
+	const { user, router, handleLogout } = useAuthGuard();
 	const pathname = usePathname();
+	const hasMounted = useHasMounted();
 
+
+	if (!hasMounted) {
+		return <Loading />;
+	}
+
+	if (!user) {
+		return <Loading />;
+	}
 	const menuItems = [
 		{ path: '/dashboard', icon: Home, label: 'Dashboard' },
 		{ path: '/dashboard/tasks', icon: CheckSquare, label: 'Tasks' },
 		{ path: '/dashboard/calendar', icon: Calendar, label: 'Calendar' },
 		{ path: '/dashboard/settings', icon: Settings, label: 'Settings' },
 	];
-	// ✅ Initialize user and check token expiration
-	useEffect(() => {
-		// Initialize user from localStorage on mount
-		dispatch(initializeUser());
-
-		// Check token expiration every 30 seconds
-		const interval = setInterval(() => {
-			const storedUser = localStorage.getItem('loggedEventappUser'); // ✅ Fixed key
-
-			if (!storedUser) {
-				dispatch(logout());
-				router.push('/login');
-				return;
-			}
-
-			const userData = JSON.parse(storedUser);
-			const currentTime = Date.now() / 1000;
-
-			// If token expired, logout and redirect
-			if (currentTime > userData.tokenExpiry) {
-				dispatch(logout());
-				router.push('/login');
-			}
-		}, 30000); // Check every 30 seconds
-
-		return () => clearInterval(interval);
-	}, [dispatch, router]);
-
-	// ✅ Redirect if not logged in
-	useEffect(() => {
-		if (!isOnline && !localStorage.getItem('token')) {
-			router.push('/login');
-		}
-	}, [isOnline, router]);
 
 	return (
 		<SidebarProvider>
@@ -138,7 +108,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 													<NavigationMenuLink asChild>
 														<button
 															onClick={() => {
-																dispatch(logout());
+																handleLogout();
 																router.push('/login');
 															}}
 															className='cursor-pointer w-full text-left block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-destructive/10 hover:text-destructive focus:bg-destructive/10 focus:text-destructive'
