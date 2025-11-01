@@ -2,7 +2,6 @@
 
 import LoginForm from '../../components/LoginForm';
 import { Particles } from '../../components/magicui/particles';
-import { AuroraText } from '../../components/magicui/aurora-text';
 
 const Login = () => {
 	return (
@@ -10,10 +9,6 @@ const Login = () => {
 			<Particles className='absolute inset-0 z-0' color='#fff' />
 
 			<div className='relative z-10 flex flex-col justify-center items-center w-full min-h-screen gap-8 px-4 py-12'>
-				<AuroraText className='text-4xl lg:text-6xl font-bold text-transparent bg-clip-text'>
-					Welcome Back
-				</AuroraText>
-
 				<p className='text-light-300 text-center max-w-md text-lg'>
 					Login to access your tasks and stay productive
 				</p>

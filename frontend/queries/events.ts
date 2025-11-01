@@ -2,7 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import eventService from '@/services/events';
 import type { Event } from '@/types';
-import type { NewEvent } from '@/types'
+import type { NewEvent } from '@/types';
 
 // Query keys (good practice)
 export const eventKeys = {
@@ -37,9 +37,17 @@ export const useUpdateEvent = () => {
 	return useMutation({
 		mutationFn: (updatedEvent: Event) =>
 			eventService.update(updatedEvent.id, updatedEvent),
-		onSuccess: () => {
-			// Refetch events after updating
-			queryClient.invalidateQueries({ queryKey: eventKeys.all });
+
+		onMutate: async (updatedEvent) => {
+			await queryClient.cancelQueries({ queryKey: eventKeys.all });
+
+			const previousEvents = queryClient.getQueryData<Event[]>(eventKeys.all);
+
+			queryClient.setQueryData<Event[]>(eventKeys.all, (old) =>
+				old ? old.map((e) => (e.id === updatedEvent.id ? updatedEvent : e)) : []
+			);
+
+			return { previousEvents };
 		},
 	});
 };

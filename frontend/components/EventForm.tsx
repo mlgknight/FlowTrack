@@ -132,7 +132,7 @@ const EventForm = ({ eventFormRef }: EventFormProps) => {
 
 							<Button
 								type='submit'
-								className='w-full mt-6'
+								className='w-full mt-6 cursor-pointer'
 								size="lg"
 							>
 								Save Event

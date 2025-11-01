@@ -3,64 +3,25 @@
 import type { Event } from '../types';
 import confetti from 'canvas-confetti';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+	Card,
+	CardHeader,
+	CardTitle,
+	CardDescription,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 
 interface SingleEventProps {
 	event: Event;
 }
 
-// animate-[spin_2s_ease-in-out] add to checkmark on complete
-
 const SingleEvent = ({ event }: SingleEventProps) => {
-	const [toggle, setToggle] = useState<boolean>(false);
-
-	let eventClassNames: string;
-	let textClassNames: string;
-
-	if (toggle) {
-		eventClassNames =
-			'relative bg-card border border-green-400 rounded-xl p-6 shadow-md opacity-70 transition-all duration-200';
-		textClassNames =
-			'font-extralight text-lg text-muted-foreground line-through transition-colors';
-	} else {
-		eventClassNames =
-			'relative bg-card border border-border rounded-xl p-6 hover:border-primary/50 hover:shadow-lg transition-all duration-200 group';
-		textClassNames =
-			'font-bold text-lg text-card-foreground group-hover:text-primary transition-colors';
-	}
-
-	const getStatusConfig = (status: Event['status']) => {
-		switch (status) {
-			case 'confirmed':
-				return {
-					label: 'Confirmed',
-					className: 'bg-green-100 text-green-800 border border-green-200',
-				};
-			case 'pending':
-				return {
-					label: 'Pending',
-					className: 'bg-yellow-100 text-yellow-800 border border-yellow-200',
-				};
-			case 'urgent':
-				return {
-					label: 'Urgent',
-					className: 'bg-red-100 text-red-800 border border-red-200',
-				};
-			case 'cancelled':
-				return {
-					label: 'Cancelled',
-					className: 'bg-gray-200 text-gray-600 border border-gray-300',
-				};
-			default:
-				return {
-					label: 'Unknown',
-					className: 'bg-muted text-muted-foreground border border-border',
-				};
-		}
-	};
+	const [completed, setCompleted] = useState(false);
 
 	const handleCompleteEvent = () => {
-		setToggle(!toggle);
+		setCompleted(!completed);
+
 		const defaults = {
 			spread: 360,
 			ticks: 50,
@@ -90,23 +51,51 @@ const SingleEvent = ({ event }: SingleEventProps) => {
 		setTimeout(shoot, 200);
 	};
 
-	const statusConfig = getStatusConfig(event.status);
+	const getStatusConfig = (status: Event['status']) => {
+		switch (status) {
+			case 'confirmed':
+				return { label: 'Confirmed', variant: 'success' };
+			case 'pending':
+				return { label: 'Pending', variant: 'secondary' };
+			case 'urgent':
+				return { label: 'Urgent', variant: 'destructive' };
+			case 'cancelled':
+				return { label: 'Cancelled', variant: 'outline' };
+			default:
+				return { label: 'Unknown', variant: 'default' };
+		}
+	};
+
+	const status = getStatusConfig(event.status);
 
 	return (
-		<li className={eventClassNames}>
-			<div className='flex flex-row items-start justify-between gap-4'>
+		<Card
+			className={`relative p-4 transition-all duration-200 ${
+				completed ? 'opacity-70' : 'hover:shadow-lg'
+			}`}
+		>
+			<CardHeader className='flex justify-between items-start gap-4 p-0'>
 				<div className='flex items-start gap-4'>
 					<Checkbox
-						className='cursor-pointer rounded-xl w-6 h-6 mt-1'
-						onClick={handleCompleteEvent}
 						id={`checkbox-${event.title}`}
+						checked={completed}
+						onClick={handleCompleteEvent}
+						className='w-6 h-6 mt-1 cursor-pointer'
 					/>
 					<div className='flex flex-col gap-1'>
-						<h3 className={textClassNames}>{event.title}</h3>
+						<CardTitle
+							className={`text-lg ${
+								completed
+									? 'line-through font-extralight text-muted-foreground'
+									: 'font-bold text-card-foreground'
+							}`}
+						>
+							{event.title}
+						</CardTitle>
 						{event.description && (
-							<p className='text-sm text-muted-foreground leading-relaxed'>
+							<CardDescription className='text-sm text-muted-foreground leading-relaxed'>
 								{event.description}
-							</p>
+							</CardDescription>
 						)}
 						<div className='flex items-center gap-2 text-xs text-muted-foreground mt-2'>
 							<svg
@@ -140,13 +129,9 @@ const SingleEvent = ({ event }: SingleEventProps) => {
 						</div>
 					</div>
 				</div>
-				<span
-					className={`text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap self-start ${statusConfig.className}`}
-				>
-					{statusConfig.label}
-				</span>
-			</div>
-		</li>
+				<Badge variant='outline'>{status.label}</Badge>
+			</CardHeader>
+		</Card>
 	);
 };
 

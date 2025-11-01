@@ -25,13 +25,13 @@ export default function NotFound() {
 	}
 
 	return (
-		<div className='min-h-screen flex flex-col items-center justify-center text-center bg-background px-4 gap-6'>
+		<section className=' min-h-screen flex flex-col items-center justify-center text-center bg-background px-4 gap-6'>
 			<div className='animate-in fade-in zoom-in duration-500'>
 				<Image
 					src='/Llama_404.png'
 					alt='404 Llama'
-					width={400}
-					height={400}
+					width={300}
+					height={300}
 					className='drop-shadow-2xl'
 				/>
 			</div>
@@ -53,6 +53,6 @@ export default function NotFound() {
 			>
 				Return Home
 			</button>
-		</div>
+		</section>
 	);
 }

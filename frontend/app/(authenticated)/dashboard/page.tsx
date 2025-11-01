@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/store/hooks';
 import Loading from '@/components/Loading';
-import DashboardUI from '@/components/DashboardUI';
+import DashboardUI from '@/components/Dashboard';
 
 const Dashboard = () => {
 	const router = useRouter();
