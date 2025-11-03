@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/navigation-menu';
 
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-
+import { ThemeToggle } from '@/components/Theme/ThemeToggle';
 const Nav = () => {
 	const { isOnline } = useAppSelector((state) => state.user);
 	const [mounted, setMounted] = useState(false);
@@ -47,7 +47,6 @@ const Nav = () => {
 						TaskFlow
 					</Link>
 				</div>
-
 				{/* Desktop Navigation */}
 				<NavigationMenu className='hidden lg:flex'>
 					<NavigationMenuList className='gap-2'>
@@ -63,6 +62,7 @@ const Nav = () => {
 								</NavigationMenuLink>
 							</NavigationMenuItem>
 						))}
+						<ThemeToggle />
 					</NavigationMenuList>
 				</NavigationMenu>
 

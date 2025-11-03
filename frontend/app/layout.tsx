@@ -1,9 +1,9 @@
-
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Nav from '../components/Nav';
 import Providers from '../components/Providers';
+import { ThemeProvider } from '@/components/Theme/ThemeProvider';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -26,13 +26,46 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en' className='scroll-smooth dark' data-theme='dark' >
+		<html
+			lang='en'
+			className='scroll-smooth'
+			data-theme=''
+			suppressHydrationWarning
+		>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen`}
 			>
 				<Providers>
-					<Nav />
-					<main className='min-h-screen'>{children}</main>
+					<ThemeProvider
+						attribute='class'
+						defaultTheme='system'
+						enableSystem
+						themes={[
+							'light',
+							'dark',
+							'ocean',
+							'sunset',
+							'forest',
+							'rose',
+							'midnight',
+							'lavender',
+							'cyberpunk',
+							'autumn',
+							'monochrome',
+							'nord',
+							'sakura',
+							'dracula',
+							'mint',
+							'neon',
+							'coffee',
+							'slate',
+							'monokai',
+							'solarized-light',
+						]}
+					>
+						<Nav />
+						<main className='min-h-screen'>{children}</main>
+					</ThemeProvider>
 				</Providers>
 			</body>
 		</html>
