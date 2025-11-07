@@ -1,5 +1,7 @@
+'use client';
+
 // hooks/useAuthGuard.ts
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { initializeUser, logout } from '@/store/slices/userSlice';
@@ -9,6 +11,12 @@ export const useAuthGuard = () => {
 	const router = useRouter();
 	const { isOnline, user } = useAppSelector((state) => state.user);
 
+	// Centralized logout function
+	const handleLogout = useCallback(() => {
+		dispatch(logout());
+		router.push('/login');
+	}, [dispatch, router]);
+
 	// Initialize user and check token expiration
 	useEffect(() => {
 		dispatch(initializeUser());
@@ -17,8 +25,7 @@ export const useAuthGuard = () => {
 			const storedUser = localStorage.getItem('loggedEventappUser');
 
 			if (!storedUser) {
-				dispatch(logout());
-				router.push('/login');
+				handleLogout();
 				return;
 			}
 
@@ -27,18 +34,16 @@ export const useAuthGuard = () => {
 				const currentTime = Date.now() / 1000;
 
 				if (currentTime > userData.tokenExpiry) {
-					dispatch(logout());
-					router.push('/login');
+					handleLogout();
 				}
 			} catch (error) {
-                console.log(error)
-				dispatch(logout());
-				router.push('/login');
+				console.log(error);
+				handleLogout();
 			}
 		}, 30000);
 
 		return () => clearInterval(interval);
-	}, [dispatch, router]);
+	}, [dispatch, handleLogout]);
 
 	useEffect(() => {
 		if (!isOnline) {
@@ -51,9 +56,6 @@ export const useAuthGuard = () => {
 		isOnline,
 		dispatch,
 		router,
-		handleLogout: () => {
-			dispatch(logout());
-			router.push('/login');
-		},
+		handleLogout,
 	};
 };

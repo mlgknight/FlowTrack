@@ -39,6 +39,29 @@ const getAll = async () => {
 	}
 };
 
+const getUserEvents = async () => {
+	initializeToken();
+
+	try {
+		const loggedUserJSON = window.localStorage.getItem('loggedEventappUser');
+		if (!loggedUserJSON) throw new Error('No user logged in');
+
+		const user = JSON.parse(loggedUserJSON);
+		const config = {
+			headers: { Authorization: token },
+		};
+
+		const response = await axios.get(
+			`http://localhost:3001/api/users/${user.id}`,
+			config
+		);
+		return response.data.events || [];
+	} catch (error) {
+		console.log(`Unable to fetch Events ${error}`);
+		throw error;
+	}
+};
+
 const create = async (newObject: Event) => {
 	initializeToken();
 	const config = {
@@ -69,6 +92,7 @@ const eventService = {
 	create,
 	update,
 	setToken,
+	getUserEvents
 };
 
 export default eventService;

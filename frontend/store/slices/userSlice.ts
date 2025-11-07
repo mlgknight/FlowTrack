@@ -1,11 +1,14 @@
+// store/slices/userSlice.ts
 import {
 	type PayloadAction,
 	createSlice,
 	createAsyncThunk,
 } from '@reduxjs/toolkit';
 import { jwtDecode } from 'jwt-decode';
-import loginService from '../../services/login';
+import loginService from '@/services/login';
+import signupService from '@/services/signup';
 import type { User } from '../../types';
+import { queryClient } from '@/queries/queryClient';
 
 interface UserState {
 	user: User | null;
@@ -28,22 +31,70 @@ const initialState: UserState = {
 	error: null,
 };
 
+export const signupUser = createAsyncThunk(
+	'user/signup',
+	async (
+		credentials: { username: string; name: string; password: string },
+		{ rejectWithValue }
+	) => {
+		try {
+			const data = await signupService.signup(credentials);
+
+			const decoded: DecodedToken = jwtDecode(data.token);
+
+			const userCredentials = {
+				token: data.token,
+				username: data.username,
+				tokenExpiry: decoded.exp,
+			};
+
+			localStorage.setItem('token', data.token);
+			localStorage.setItem(
+				'loggedEventappUser',
+				JSON.stringify(userCredentials)
+			);
+
+			return { token: data.token, username: data.username };
+		} catch (error) {
+			console.error('🔴 Thunk: Signup failed:', error);
+			if (error instanceof Error) {
+				return rejectWithValue(error.message);
+			}
+			return rejectWithValue('Signup failed. Please try again.');
+		}
+	}
+);
+
 export const loginUser = createAsyncThunk(
 	'user/login',
-	async (credentials: { username: string; password: string }) => {
-		const data = await loginService.login(credentials);
-		const decoded: DecodedToken = jwtDecode(data.token);
+	async (
+		credentials: { username: string; password: string },
+		{ rejectWithValue }
+	) => {
+		try {
+			const data = await loginService.login(credentials);
+			const decoded: DecodedToken = jwtDecode(data.token);
 
-		const userCredentials = {
-			token: data.token,
-			username: data.username,
-			tokenExpiry: decoded.exp,
-		};
+			const userCredentials = {
+				token: data.token,
+				username: data.username,
+				id: decoded.id,
+				tokenExpiry: decoded.exp,
+			};
 
-		localStorage.setItem('token', data.token);
-		localStorage.setItem('loggedEventappUser', JSON.stringify(userCredentials));
+			localStorage.setItem('token', data.token);
+			localStorage.setItem(
+				'loggedEventappUser',
+				JSON.stringify(userCredentials)
+			);
 
-		return { token: data.token, username: data.username };
+			return { token: data.token, username: data.username };
+		} catch (error) {
+			if (error instanceof Error) {
+				return rejectWithValue(error.message);
+			}
+			return rejectWithValue('Login failed. Please try again.');
+		}
 	}
 );
 
@@ -75,6 +126,11 @@ export const userSlice = createSlice({
 
 		// Action to logout
 		logout: (state) => {
+			// Remove ALL event queries (including user-specific ones)
+			queryClient.removeQueries({
+				predicate: (query) => query.queryKey[0] === 'events',
+			});
+
 			state.user = null;
 			state.isOnline = false;
 			state.error = null;
@@ -84,6 +140,28 @@ export const userSlice = createSlice({
 	},
 
 	extraReducers: (builder) => {
+		// Signup user
+		builder
+			.addCase(signupUser.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(signupUser.fulfilled, (state, action) => {
+				state.loading = false;
+				state.user = action.payload;
+				state.isOnline = true;
+				state.error = null;
+				// Remove ALL event queries when new user signs up
+				queryClient.removeQueries({
+					predicate: (query) => query.queryKey[0] === 'events',
+				});
+			})
+			.addCase(signupUser.rejected, (state, action) => {
+				console.error('❌ Redux: Signup rejected', action.payload);
+				state.loading = false;
+				state.error = (action.payload as string) || 'Failed to signup';
+			});
+
 		// Login user
 		builder
 			.addCase(loginUser.pending, (state) => {
@@ -94,10 +172,15 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.user = action.payload;
 				state.isOnline = true;
+				state.error = null;
+				// Remove ALL event queries when new user logs in
+				queryClient.removeQueries({
+					predicate: (query) => query.queryKey[0] === 'events',
+				});
 			})
 			.addCase(loginUser.rejected, (state, action) => {
 				state.loading = false;
-				state.error = action.error.message || 'Failed to login';
+				state.error = (action.payload as string) || 'Failed to login';
 			});
 
 		// Initialize user
@@ -110,6 +193,11 @@ export const userSlice = createSlice({
 				if (action.payload) {
 					state.user = action.payload;
 					state.isOnline = true;
+				} else {
+					// No valid user found, clear ALL event queries
+					queryClient.removeQueries({
+						predicate: (query) => query.queryKey[0] === 'events',
+					});
 				}
 			})
 			.addCase(initializeUser.rejected, (state, action) => {

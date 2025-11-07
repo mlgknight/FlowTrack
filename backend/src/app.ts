@@ -1,4 +1,3 @@
-import 'express-async-errors';
 import 'dotenv/config';
 import express from 'express';
 import eventRouter from './routes/event.routes.ts';
@@ -7,7 +6,6 @@ import loginRouter from './routes/login.routes.ts';
 import resetDBRouter from './routes/restDB.routes.ts';
 import connectDB from './utils/database.ts';
 import { errorHandler } from './utils/middleware.ts';
-import 'express-async-errors';
 import cors from 'cors';
 
 const app = express();

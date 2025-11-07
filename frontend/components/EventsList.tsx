@@ -12,7 +12,6 @@ import {
 	CardTitle,
 } from '@/components/ui/card';
 
-
 const EventsList = () => {
 	const { data: events = [], error, isError, isLoading } = useEvents();
 

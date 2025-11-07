@@ -8,7 +8,7 @@ export const addNewLogin = async (req: Request, res: Response) => {
 	const { username, password } = req.body;
 
 	const user = await User.findOne({ username });
-	
+
 	// Check if user exists and has a password hash
 	const passwordCorrect =
 		user === null || !user.passwordHash
@@ -37,9 +37,9 @@ export const addNewLogin = async (req: Request, res: Response) => {
 		expiresIn: '7d',
 	});
 
-	res.status(200).send({ 
-		token, 
-		username: user.username, 
-		name: user.name 
+	res.status(200).send({
+		token,
+		username: user.username,
+		name: user.name,
 	});
 };

@@ -2,7 +2,7 @@
 
 import { type FormEvent, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { loginUser } from '../store/slices/userSlice';
+import { signupUser } from '../store/slices/userSlice';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,38 +21,121 @@ import { AlertCircle, Loader2 } from 'lucide-react';
 const SignUpForm = () => {
 	const dispatch = useAppDispatch();
 	const usernameRef = useRef<HTMLInputElement>(null);
+	const nameRef = useRef<HTMLInputElement>(null);
 	const passwordRef = useRef<HTMLInputElement>(null);
+	const confirmPasswordRef = useRef<HTMLInputElement>(null);
 	const router = useRouter();
 	const [localError, setLocalError] = useState<string | null>(null);
+	const isLoading = useAppSelector((state) => state.user.loading);
+	const isLoggedIn = useAppSelector((state) => state.user.isOnline);
+
+	if (isLoggedIn) {
+		redirect('/dashboard');
+	}
+
+	const handleSignup = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		setLocalError(null);
+
+		const username = usernameRef.current?.value.trim() || '';
+		const name = nameRef.current?.value.trim() || '';
+		const password = passwordRef.current?.value.trim() || '';
+		const confirmPassword = confirmPasswordRef.current?.value.trim() || '';
+
+		if (!username) {
+			const errorMsg = 'Please fill out the username';
+			setLocalError(errorMsg);
+			setTimeout(() => {
+				setLocalError(null);
+			}, 5000);
+			return;
+		}
+
+		if (!name) {
+			const errorMsg = 'Please fill out your name';
+			setLocalError(errorMsg);
+			setTimeout(() => {
+				setLocalError(null);
+			}, 5000);
+			return;
+		}
+
+		if (!password) {
+			const errorMsg = 'Please fill out the password';
+			setLocalError(errorMsg);
+			setTimeout(() => {
+				setLocalError(null);
+			}, 5000);
+			return;
+		}
+
+		if (!confirmPassword) {
+			const errorMsg = 'Please confirm your password';
+			setLocalError(errorMsg);
+			setTimeout(() => {
+				setLocalError(null);
+			}, 5000);
+			return;
+		}
+
+		if (password !== confirmPassword) {
+			const errorMsg = 'Passwords do not match';
+			setLocalError(errorMsg);
+			setTimeout(() => {
+				setLocalError(null);
+			}, 5000);
+			return;
+		}
+
+		const credentials = { name, username, password };
+		console.log('🔵 Dispatching signup with:', credentials);
+		console.log('🔵 Credentials as JSON:', JSON.stringify(credentials));
+
+		try {
+			await dispatch(signupUser(credentials)).unwrap();
+
+			// Clear form
+			if (usernameRef.current) usernameRef.current.value = '';
+			if (nameRef.current) nameRef.current.value = '';
+			if (passwordRef.current) passwordRef.current.value = '';
+			if (confirmPasswordRef.current) confirmPasswordRef.current.value = '';
+
+			router.push('/dashboard');
+		} catch (error) {
+			// Extract error message properly
+			const errorMsg =
+				typeof error === 'string' ? error : 'Unable to create account';
+			setLocalError(errorMsg);
+			console.error('🔴 Signup error in component:', error);
+			setTimeout(() => {
+				setLocalError(null);
+			}, 5000);
+		}
+	};
 
 	return (
-		<div className='w-full max-w-md space-y-6'>
+		<section className='w-full max-w-md space-y-6'>
 			{localError && (
 				<Alert
 					variant='destructive'
-					className='border-destructive/50 bg-destructive/10 backdrop-blur-sm animate-in fade-in slide-in-from-top-2 duration-300'
+					className='animate-in fade-in slide-in-from-top-2 duration-300'
 				>
 					<AlertCircle className='h-4 w-4' />
 					<AlertDescription className='ml-2'>{localError}</AlertDescription>
 				</Alert>
 			)}
 
-			<Card className='w-full border-primary/30 bg-dark-100/80 backdrop-blur-md shadow-2xl'>
-				<CardHeader className='space-y-3'>
-					<CardTitle className='text-3xl font-bold text-light-100'>
-						Welcome back
-					</CardTitle>
-					<CardDescription className='text-light-300 text-base'>
-						Enter your credentials to access your account
+			<Card className='w-full border shadow-lg'>
+				<CardHeader className='space-y-3 text-center'>
+					<CardTitle className='text-3xl font-bold'>Create Account</CardTitle>
+					<CardDescription className='text-base'>
+						Enter your details to get started
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<form onSubmit={handleLogin} className='flex flex-col space-y-6'>
+					<form onSubmit={handleSignup} className='flex flex-col space-y-6'>
 						<div className='space-y-2'>
-							<Label
-								htmlFor='username'
-								className='text-light-200 text-sm font-medium'
-							>
+							<Label htmlFor='username' className='text-sm font-medium'>
 								Username
 							</Label>
 							<Input
@@ -61,16 +144,28 @@ const SignUpForm = () => {
 								id='username'
 								name='Username'
 								placeholder='Enter your username'
-								className='border-primary/50 bg-dark-200 text-light-100 placeholder:text-light-300/50 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 transition-all'
+								className='h-12'
 								disabled={isLoading}
 							/>
 						</div>
 
 						<div className='space-y-2'>
-							<Label
-								htmlFor='password'
-								className='text-light-200 text-sm font-medium'
-							>
+							<Label htmlFor='name' className='text-sm font-medium'>
+								Name
+							</Label>
+							<Input
+								ref={nameRef}
+								type='text'
+								id='name'
+								name='Name'
+								placeholder='Enter your name'
+								className='h-12'
+								disabled={isLoading}
+							/>
+						</div>
+
+						<div className='space-y-2'>
+							<Label htmlFor='password' className='text-sm font-medium'>
 								Password
 							</Label>
 							<Input
@@ -79,29 +174,44 @@ const SignUpForm = () => {
 								id='password'
 								name='Password'
 								placeholder='Enter your password'
-								className='border-primary/50 bg-dark-200 text-light-100 placeholder:text-light-300/50 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 transition-all'
+								className='h-12'
+								disabled={isLoading}
+							/>
+						</div>
+
+						<div className='space-y-2'>
+							<Label htmlFor='confirmPassword' className='text-sm font-medium'>
+								Confirm Password
+							</Label>
+							<Input
+								ref={confirmPasswordRef}
+								type='password'
+								id='confirmPassword'
+								name='ConfirmPassword'
+								placeholder='Confirm your password'
+								className='h-12'
 								disabled={isLoading}
 							/>
 						</div>
 
 						<Button
 							type='submit'
-							className='cursor-pointer w-full h-12 bg-primary-gradient text-primary-foreground hover:opacity-90 font-semibold text-base transition-all duration-300 shadow-lg hover:shadow-primary/50 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100'
+							className='w-full h-12 font-semibold text-base'
 							disabled={isLoading}
 						>
 							{isLoading ? (
 								<>
 									<Loader2 className='mr-2 h-5 w-5 animate-spin' />
-									Logging in...
+									Creating account...
 								</>
 							) : (
-								'Login'
+								'Sign Up'
 							)}
 						</Button>
 					</form>
 				</CardContent>
 			</Card>
-		</div>
+		</section>
 	);
 };
 
