@@ -1,9 +1,8 @@
 import type { Request, Response } from 'express';
-import Note from '../models/Event.ts';
-import User from '../models/User.ts';
+import Event from '../models/Event.ts';
 
 export const resetDB = async (req: Request, res: Response) => {
-	await Note.deleteMany({});
+	await Event.destroy({});
 
 	res.status(204).end();
 };

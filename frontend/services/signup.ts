@@ -14,6 +14,7 @@ interface SignupResponse {
 	token: string;
 	username: string;
 	name: string;
+	id: number;
 }
 
 const signup = async (credentials: Credentials): Promise<SignupResponse> => {

@@ -7,13 +7,21 @@ import 'dotenv/config';
 export const addNewLogin = async (req: Request, res: Response) => {
 	const { username, password } = req.body;
 
-	const user = await User.findOne({ username });
+	const user = await User.scope('withPassword').findOne({
+		where: { username },
+	});
 
 	// Check if user exists and has a password hash
 	const passwordCorrect =
 		user === null || !user.passwordHash
 			? false
 			: await bcrypt.compare(password, user.passwordHash);
+	console.log('Password sent:', password);
+	console.log('PasswordHash in DB:', user?.passwordHash);
+	console.log(
+		'Compare:',
+		await bcrypt.compare(password, user?.passwordHash || '')
+	);
 
 	if (!(user && passwordCorrect)) {
 		return res.status(401).json({

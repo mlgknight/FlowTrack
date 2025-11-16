@@ -1,32 +1,54 @@
-import mongoose, { Document, Schema, Model } from 'mongoose';
-import type { IUser } from '../utils/types.ts';
+import { Sequelize, DataTypes, Model } from 'sequelize';
+import { sequelize } from '../utils/database.ts';
 
-const userSchema = new mongoose.Schema<IUser>({
-	username: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-	name: String,
-	passwordHash: String,
-	events: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Event',
-		},
-	],
-});
+export default class User extends Model {
+  declare id: number;
+  declare username: string;
+  declare name: string | null;
+  declare passwordHash: string | null;
+  declare createdAt: Date;
+  declare updatedAt: Date;
+}
 
-userSchema.set('toJSON', {
-	transform: (document, returnedObject) => {
-		returnedObject.id = returnedObject._id.toString();
-		delete returnedObject._id;
-		delete returnedObject.__v;
-		// the passwordHash should not be revealed
-		delete returnedObject.passwordHash;
-	},
-});
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    passwordHash: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
+    timestamps: true,
+    defaultScope: {
+      attributes: { exclude: ['passwordHash'] },
+    },
+    scopes: {
+      withPassword: {
+        attributes: { include: ['passwordHash'] },
+      },
+    },
+  }
+);
 
-const User: Model<IUser> = mongoose.model<IUser>('User', userSchema);
-
-export default User;
+User.prototype.toJSON = function () {
+  const values = { ...this.get() };
+  delete values.passwordHash;
+  return values;
+};

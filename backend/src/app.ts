@@ -13,7 +13,10 @@ const app = express();
 app.use(cors());
 
 // Connect to MongoDB
+
 connectDB();
+
+
 // middleware
 app.use(express.json());
 app.use(express.static('dist'));

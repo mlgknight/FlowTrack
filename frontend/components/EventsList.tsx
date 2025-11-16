@@ -19,6 +19,8 @@ const EventsList = () => {
 		return <Loading />;
 	}
 
+	console.log(events);
+
 	return (
 		<section className='w-full max-w-4xl mx-auto space-y-6'>
 			{isError && (

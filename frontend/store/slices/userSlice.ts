@@ -46,6 +46,7 @@ export const signupUser = createAsyncThunk(
 				token: data.token,
 				username: data.username,
 				tokenExpiry: decoded.exp,
+				id: data.id,
 			};
 
 			localStorage.setItem('token', data.token);
@@ -54,7 +55,12 @@ export const signupUser = createAsyncThunk(
 				JSON.stringify(userCredentials)
 			);
 
-			return { token: data.token, username: data.username };
+			return {
+				token: data.token,
+				username: data.username,
+				name: data.name,
+				id: data.id,
+			};
 		} catch (error) {
 			console.error('🔴 Thunk: Signup failed:', error);
 			if (error instanceof Error) {

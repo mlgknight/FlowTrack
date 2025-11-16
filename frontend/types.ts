@@ -15,7 +15,7 @@ export type NewEvent = Omit<Event, 'id'>;
 
 export interface User {
 	token: string;
-	username?: string;
+	username: string;
 	name?: string;
-	id?: string;
+	id?: number;
 }

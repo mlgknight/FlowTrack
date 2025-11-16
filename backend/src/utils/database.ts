@@ -1,20 +1,38 @@
-import mongoose from 'mongoose';
-import { MONGODB_URI } from './config.ts';
+import { Sequelize } from 'sequelize';
 import logger from './logger.ts';
-const connectDB = async () => {
-   const URL = MONGODB_URI;
 
-   if (!URL) {
-      throw new Error('MONGODB_URI environment variable is not set');
-   }
+const sequelize = new Sequelize(process.env.DATABASE_URL || '', {
+	dialect: 'postgres',
+	logging: true,
+});
 
-   try {
-      const conn = await mongoose.connect(URL);
-      logger.info(`MongoDB Connected: ${conn.connection.host}`);
-   } catch (error) {
-      logger.error('Database connection error:', error);
-      process.exit(1);
-   }
+const connectPostgres = async () => {
+	try {
+		await sequelize.authenticate();
+		logger.info('PostgreSQL connection established successfully');
+
+		await sequelize.sync({
+			force: process.env.NODE_ENV === 'development', // Only in dev!
+		});
+		logger.info('Database tables synced');
+
+		return sequelize;
+	} catch (error) {
+		logger.error('Unable to connect to PostgreSQL:', error);
+		throw error;
+	}
 };
 
+const connectDB = async () => {
+	try {
+		await connectPostgres();
+
+		logger.info('Database(s) connected');
+	} catch (error) {
+		logger.error('Database connection failed:', error);
+		process.exit(1);
+	}
+};
+
+export { sequelize };
 export default connectDB;

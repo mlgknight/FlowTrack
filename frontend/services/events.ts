@@ -23,13 +23,21 @@ const initializeToken = () => {
 	}
 };
 
+const getAuthConfig = () => {
+	initializeToken();
+	return {
+		headers: {
+			Authorization: token,
+		},
+	};
+};
+
 const setToken = (newToken: string | null) => {
 	token = newToken ? `Bearer ${newToken}` : null;
 	isInitialized = true;
 };
 
 const getAll = async () => {
-	initializeToken();
 	try {
 		const response = await axios.get(baseUrl);
 		return response.data;
@@ -47,14 +55,12 @@ const getUserEvents = async () => {
 		if (!loggedUserJSON) throw new Error('No user logged in');
 
 		const user = JSON.parse(loggedUserJSON);
-		const config = {
-			headers: { Authorization: token },
-		};
 
 		const response = await axios.get(
 			`http://localhost:3001/api/users/${user.id}`,
-			config
+			getAuthConfig()
 		);
+
 		return response.data.events || [];
 	} catch (error) {
 		console.log(`Unable to fetch Events ${error}`);
@@ -62,13 +68,9 @@ const getUserEvents = async () => {
 	}
 };
 
-const create = async (newObject: Event) => {
-	initializeToken();
-	const config = {
-		headers: { Authorization: token },
-	};
+const create = async (newObject: NewEvent) => {
 	try {
-		const response = await axios.post(baseUrl, newObject, config);
+		const response = await axios.post(baseUrl, newObject, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		console.error(`Unable to create Event ${error}`);
@@ -77,9 +79,8 @@ const create = async (newObject: Event) => {
 };
 
 const update = async (id: string, newObject: NewEvent) => {
-	initializeToken(); // Initialize lazily when first API call is made
 	try {
-		const response = await axios.put(`${baseUrl}/${id}`, newObject);
+		const response = await axios.put(`${baseUrl}/${id}`, newObject, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		console.error(`Unable to Update Event ${error}`);
@@ -92,7 +93,7 @@ const eventService = {
 	create,
 	update,
 	setToken,
-	getUserEvents
+	getUserEvents,
 };
 
 export default eventService;
