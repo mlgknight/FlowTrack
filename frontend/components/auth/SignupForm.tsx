@@ -1,8 +1,8 @@
 'use client';
 
 import { type FormEvent, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { signupUser } from '../store/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { signupUser } from '../../store/slices/userSlice';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -88,8 +88,6 @@ const SignUpForm = () => {
 		}
 
 		const credentials = { name, username, password };
-		console.log('🔵 Dispatching signup with:', credentials);
-		console.log('🔵 Credentials as JSON:', JSON.stringify(credentials));
 
 		try {
 			await dispatch(signupUser(credentials)).unwrap();
@@ -106,7 +104,6 @@ const SignUpForm = () => {
 			const errorMsg =
 				typeof error === 'string' ? error : 'Unable to create account';
 			setLocalError(errorMsg);
-			console.error('🔴 Signup error in component:', error);
 			setTimeout(() => {
 				setLocalError(null);
 			}, 5000);

@@ -1,6 +1,6 @@
 'use client';
 
-import SingleEvent from '@/components/SingleEvent';
+import SingleEvent from './SingleEvent';
 import { useEvents } from '@/queries/events';
 import Loading from '@/components/Loading';
 import { Alert, AlertDescription } from '@/components/ui/alert';

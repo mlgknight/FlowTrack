@@ -1,7 +1,7 @@
 'use client';
 
-import EventsList from '@/components/EventsList';
-import EventsForm from '../../../../components/EventForm';
+import EventsList from '@/components/events/EventsList';
+import EventsForm from '@/components/events/EventForm';
 
 const Tasks = () => {
 	return (

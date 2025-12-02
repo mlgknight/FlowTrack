@@ -1,7 +1,7 @@
 'use client';
 
-import LoginForm from '../../components/LoginForm';
-import { Particles } from '../../components/magicui/particles';
+import LoginForm from '@/components/auth/LoginForm';
+import { Particles } from '@/components/magicui/particles';
 
 const Login = () => {
 	return (

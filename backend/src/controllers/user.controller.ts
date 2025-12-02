@@ -11,7 +11,15 @@ export const getAllUsers = async (req: Request, res: Response) => {
 				{
 					model: Event,
 					as: 'events',
-					attributes: ['id', 'title', 'backgroundColor', 'status', 'description', 'start', 'end'],
+					attributes: [
+						'id',
+						'title',
+						'backgroundColor',
+						'status',
+						'description',
+						'start',
+						'end',
+					],
 				},
 			],
 		});
@@ -30,7 +38,15 @@ export const getUser = async (req: Request, res: Response) => {
 				{
 					model: Event,
 					as: 'events',
-					attributes: ['id', 'title', 'backgroundColor', 'status', 'description', 'start', 'end'],
+					attributes: [
+						'id',
+						'title',
+						'backgroundColor',
+						'status',
+						'description',
+						'start',
+						'end',
+					],
 				},
 			],
 		});
@@ -95,5 +111,28 @@ export const addNewUser = async (req: Request, res: Response) => {
 	} catch (error) {
 		console.error('Error creating user:', error);
 		res.status(500).json({ error: 'Failed to create user' });
+	}
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+	try {
+		const { username, name } = req.body;
+
+		const user = await User.findOne({ where: { id: req.params.id } });
+		if (!user) {
+			return res.status(404).json({ error: 'User not found' });
+		}
+
+		await user.update({
+			...(username !== undefined && { username }),
+			...(name !== undefined && { name }),
+		});
+
+		const updatedUser = await User.findByPk(user.id, {});
+
+		res.json(updatedUser);
+	} catch (error) {
+		console.error('Error updating user:', error);
+		res.status(500).json({ error: 'Failed to update user' });
 	}
 };

@@ -25,6 +25,11 @@ import {
 	User,
 	Bell,
 	ChevronDown,
+	List,
+	Grid,
+	CheckCircle,
+	Clipboard,
+	FileText,
 } from 'lucide-react';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { useState } from 'react';
@@ -34,11 +39,18 @@ const SideBar = ({ children }: { children: React.ReactNode }) => {
 	const [settingsOpen, setSettingsOpen] = useState(
 		pathname.startsWith('/dashboard/settings')
 	);
+	const [tasksOpen, setTasksOpen] = useState(
+		pathname.startsWith('/dashboard/tasklist')
+	);
 
 	const menuItems = [
 		{ path: '/dashboard', icon: Home, label: 'Dashboard' },
-		{ path: '/dashboard/tasks', icon: CheckSquare, label: 'Tasks' },
 		{ path: '/dashboard/calendar', icon: Calendar, label: 'Calendar' },
+	];
+	// work in progress
+	const taskList = [
+		{ path: '/dashboard/tasklist/board', icon: Grid, label: 'Board' },
+		{ path: '/dashboard/tasklist/tasks', icon: List, label: 'Tasks' },
 	];
 
 	const settingsItems = [
@@ -100,6 +112,44 @@ const SideBar = ({ children }: { children: React.ReactNode }) => {
 										</SidebarMenuItem>
 									);
 								})}
+								{/* Tasks with Submenu (sibling, not nested) */}
+								<SidebarMenuItem>
+									<SidebarMenuButton
+										onClick={() => setTasksOpen(!tasksOpen)}
+										className={`cursor-pointer transition-all duration-200 rounded-lg ${
+											pathname.startsWith('/dashboard/tasklist')
+												? 'bg-primary text-primary-foreground shadow-sm font-medium'
+												: 'hover:bg-sidebar-accent text-sidebar-foreground'
+										}`}
+									>
+										<CheckSquare className='h-4 w-4' />
+										<span>Tasks</span>
+										<ChevronDown
+											className={`ml-auto h-4 w-4 transition-transform ${
+												tasksOpen ? 'rotate-180' : ''
+											}`}
+										/>
+									</SidebarMenuButton>
+
+									{tasksOpen && (
+										<SidebarMenuSub>
+											{taskList.map((item) => {
+												const Icon = item.icon;
+												return (
+													<SidebarMenuSubItem key={item.path}>
+														<SidebarMenuSubButton
+															onClick={() => router.push(item.path)}
+														>
+															<Icon className='h-4 w-4' />{' '}
+															{/* matches existing size usage */}
+															<span>{item.label}</span>
+														</SidebarMenuSubButton>
+													</SidebarMenuSubItem>
+												);
+											})}
+										</SidebarMenuSub>
+									)}
+								</SidebarMenuItem>
 
 								{/* Settings with Submenu */}
 								<SidebarMenuItem>
@@ -120,7 +170,6 @@ const SideBar = ({ children }: { children: React.ReactNode }) => {
 										/>
 									</SidebarMenuButton>
 
-									{/* Submenu */}
 									{settingsOpen && (
 										<SidebarMenuSub>
 											{settingsItems.map((item) => {

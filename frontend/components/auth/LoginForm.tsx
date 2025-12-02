@@ -1,8 +1,8 @@
 'use client';
 
 import { type FormEvent, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { loginUser } from '../store/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { loginUser } from '@/store/slices/userSlice';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

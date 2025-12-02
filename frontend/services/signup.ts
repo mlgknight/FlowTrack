@@ -22,6 +22,6 @@ const signup = async (credentials: Credentials): Promise<SignupResponse> => {
 	return response.data;
 };
 
-const SignupService = { signup };
+const signupService = { signup };
 
-export default SignupService;
+export default signupService;

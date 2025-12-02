@@ -1,7 +1,7 @@
 import { type FormEvent, useRef, type Ref } from 'react';
-import type { TogglableHandle } from './Togglable';
+import type { TogglableHandle } from '../Togglable';
 import { useCreateEvent } from '@/queries/events';
-import Togglable from './Togglable';
+import Togglable from '../Togglable';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';

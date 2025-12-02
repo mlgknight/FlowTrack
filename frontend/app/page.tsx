@@ -15,6 +15,7 @@ import { TypingAnimation } from '../components/magicui/typing-animation';
 import { useAppSelector } from '@/store/hooks';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import Footer from '@/components/Footer';
 
 const Home = () => {
 	const isLoggedIn = useAppSelector((state) => state.user.isOnline);
@@ -110,6 +111,7 @@ const Home = () => {
 					</div>
 
 			</section>
+									<Footer />
 		</>
 	);
 };

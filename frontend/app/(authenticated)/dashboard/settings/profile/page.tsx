@@ -1,8 +1,10 @@
+import ProfileSettings from '@/components/profile/ProfileSettings';
+
 
 const Profile = () => {
   return (
     <section>
-      <h1>Profile</h1>
+      <ProfileSettings />
     </section>
   )
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import type { Event } from '../types';
+import type { Event } from '@/types';
 import confetti from 'canvas-confetti';
 import { Checkbox } from '@/components/ui/checkbox';
 import {

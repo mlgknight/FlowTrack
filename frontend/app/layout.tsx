@@ -3,7 +3,9 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Nav from '../components/Nav';
 import Providers from '../components/Providers';
+
 import { ThemeProvider } from '@/components/Theme/ThemeProvider';
+
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -25,6 +27,8 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+
+
 	return (
 		<html
 			lang='en'
@@ -65,6 +69,7 @@ export default function RootLayout({
 					>
 						<Nav />
 						<main className='min-h-screen'>{children}</main>
+
 					</ThemeProvider>
 				</Providers>
 			</body>
